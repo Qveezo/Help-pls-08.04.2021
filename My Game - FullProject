@@ -1,0 +1,87 @@
+import pygame
+
+
+pygame.init()
+screen = pygame.display.set_mode([800, 500])
+pygame.display.set_caption("My Game")
+screen.fill([255, 255, 255])
+clock = pygame.time.Clock()
+pygame.display.flip()
+
+
+# IMAGES
+background_img = pygame.image.load('Глобальные проекты\Project Game on Pygame\img\sky.jpg')
+player_img = pygame.image.load('Глобальные проекты\Project Game on Pygame\img\playerShip1_red.png')
+
+
+# COLORS
+RED = (255, 0, 0)
+GREEN = (0, 255, 0)
+BLUE = (0, 0, 255)
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+
+
+# PEREMENNII
+FPS = 60
+speed = 10
+shoot_time = 0
+X = 350
+Y = 420
+
+get_X = player_img.get_rect() # <----------------------
+get_Y = player_img.get_rect() # <----------------------
+
+
+# CONTROLS
+move_right = False
+move_left = False
+
+
+
+
+running = True
+while running:
+    clock.tick(FPS)
+
+    def player_shoot_on():#                                                        <----------------------
+        pygame.draw.rect(screen, RED, [get_X + 10, get_Y, 10, 30])
+        shoot_time = 1
+
+        for io in range (16):
+            pygame.draw.rect(screen, RED, [get_X, get_Y + 10, 10, 30])
+
+
+
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_RIGHT:
+                move_right = False
+            if event.key == pygame.K_LEFT:
+                move_left = False
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_RIGHT:
+                move_right = True
+            if event.key == pygame.K_LEFT:
+                move_left = True
+            if event.key == pygame.K_RETURN:
+                player_shoot_on()
+
+    if move_right == True:
+        X += speed
+        if X == 780:
+            X = 780 # BUgg
+    if move_left == True:
+        X -= speed
+
+    
+
+    screen.fill([255, 255, 255])
+    screen.blit(background_img, (0, 0))
+    screen.blit(player_img, (X, Y))
+    pygame.display.flip()
+pygame.quit()
